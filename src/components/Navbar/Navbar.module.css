@@ -1,0 +1,26 @@
+.nav{
+    grid-area: n;
+    background-color: burlywood;
+    padding: 20px;
+}
+
+.item a {
+    color: white;
+    text-decoration: none;
+}
+
+.item a.activeLink {
+    color: blue;
+}
+
+
+.item2 a {
+    color: red;
+    text-decoration: none;
+
+}
+
+.item2 a.activeLink {
+    font-style: italic;
+}
+
