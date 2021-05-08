@@ -1,18 +1,27 @@
 import React from "react";
-import {followUser, getUsers, unfollowUser} from "../../redux/users-reducer";
+import {follow, requestUsers, unfollow} from "../../redux/users-reducer";
 import {connect} from "react-redux";
 import Users from "./Users";
 import Preloader from "../../common/Preloader/Preloader";
-import withAuthRedirect from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
+import {
+    getCurrentPage,
+    getFollowingInProgress,
+    getIsFetching,
+    getPageSize,
+    getTotalUsersCount,
+    getUsersSelector
+} from "../../redux/users-selectors";
 
 class UsersContainer extends React.Component {
     componentDidMount() {
-        this.props.getUsers(this.props.currentPage, this.props.pageSize);
+        const {currentPage, pageSize} = this.props;
+        this.props.getUsers(currentPage, pageSize);
     }
 
     onPageNumberClick = (pageNumber) => {
-        this.props.getUsers(pageNumber, this.props.pageSize);
+        const {pageSize} = this.props;
+        this.props.getUsers(pageNumber, pageSize);
     }
 
     render() {
@@ -35,16 +44,15 @@ class UsersContainer extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
-        users: state.usersPage.users,
-        pageSize: state.usersPage.pageSize,
-        totalUsersCount: state.usersPage.totalUsersCount,
-        currentPage: state.usersPage.currentPage,
-        followingInProgress: state.usersPage.followingInProgress,
-        isFetching: state.usersPage.isFetching
+        users: getUsersSelector(state),
+        pageSize: getPageSize(state),
+        totalUsersCount: getTotalUsersCount(state),
+        currentPage: getCurrentPage(state),
+        followingInProgress: getFollowingInProgress(state),
+        isFetching: getIsFetching(state)
     }
 }
 
 export default compose(
-    connect(mapStateToProps, {followUser, unfollowUser, getUsers}),
-    withAuthRedirect
+    connect(mapStateToProps, {followUser: follow, unfollowUser: unfollow, getUsers: requestUsers})
 )(UsersContainer);

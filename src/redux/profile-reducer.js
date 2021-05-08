@@ -1,9 +1,9 @@
 import {profileAPI, usersAPI} from "../api/api";
 
-const ADD_POST = 'ADD-POST';
-const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT';
-const SET_USER_PROFILE = 'SET_USER_PROFILE';
-const SET_STATUS = 'SET_STATUS';
+const ADD_POST = 'profile/ADD-POST';
+const SET_USER_PROFILE = 'profile/SET_USER_PROFILE';
+const SET_STATUS = 'profile/SET_STATUS';
+const DELETE_POST = 'profile/DELETE_POST';
 
 let initialState = {
     posts: [
@@ -11,7 +11,6 @@ let initialState = {
         {id: 2, message: "It's my first post", likesCount: 7},
         {id: 3, message: "Another post", likesCount: 31}
     ],
-    newPostText: 'New post text',
     profile: null,
     status: ''
 };
@@ -21,7 +20,7 @@ const profileReducer = (state = initialState, action) => {
         case ADD_POST:
             let newPost = {
                 id: 4,
-                message: state.newPostText,
+                message: action.postText,
                 likesCount: 0
             };
             return {
@@ -29,10 +28,10 @@ const profileReducer = (state = initialState, action) => {
                 posts: [...state.posts, newPost],
                 newPostText: ''
             }
-        case UPDATE_NEW_POST_TEXT:
+        case DELETE_POST:
             return {
                 ...state,
-                newPostText: action.newText
+                posts: state.posts.filter(p => p.id !== action.postId)
             }
         case SET_USER_PROFILE:
             return {
@@ -54,12 +53,13 @@ export const setUserProfile = (profile) => ({
     type: SET_USER_PROFILE,
     profile
 })
-export const addPostCreator = () => ({
-    type: ADD_POST
+export const addPost = (postText) => ({
+    type: ADD_POST,
+    postText
 })
-export const updateNewPostTextCreator = (newText) => ({
-    type: UPDATE_NEW_POST_TEXT,
-    newText
+export const deletePost = (postId) => ({
+    type: DELETE_POST,
+    postId
 })
 export const setStatus = (status) => ({
     type: SET_STATUS,
@@ -67,30 +67,23 @@ export const setStatus = (status) => ({
 })
 
 // Thunk creators:
-export const getUserProfile = (userId) => {
-    return (dispatch) => {
-        usersAPI.getProfile(userId)
-            .then(data => {
-                dispatch(setUserProfile(data));
-            })
-    }
+export const getUserProfile = (userId) => async (dispatch) => {
+
+    const data = await usersAPI.getProfile(userId);
+    dispatch(setUserProfile(data));
 }
-export const getStatus = (userId) => {
-    return (dispatch) => {
-        profileAPI.getStatus(userId)
-            .then(data => {
-                dispatch(setStatus(data));
-            })
-    }
+
+export const getStatus = (userId) => async (dispatch) => {
+
+    const data = await profileAPI.getStatus(userId);
+    dispatch(setStatus(data));
 }
-export const updateStatus = (status) => {
-    return (dispatch) => {
-        profileAPI.updateStatus(status)
-            .then(data => {
-                if (data.resultCode === 0) {
-                    dispatch(setStatus(status));
-                }
-            })
+
+export const updateStatus = (status) => async (dispatch) => {
+    const data = await profileAPI.updateStatus(status);
+
+    if (data.resultCode === 0) {
+        dispatch(setStatus(status));
     }
 }
 

@@ -1,6 +1,10 @@
 .descriptionBlock {
     padding: 10px;
 }
+.descriptionBlock img {
+    width: 150px;
+    border-radius: 50%;
+}
 
 .socialNetworkIconsBlock img{
     width: 30px;
