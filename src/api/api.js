@@ -45,7 +45,24 @@ export const profileAPI = {
         return axiosInstance
             .put(`profile/status`, {status: status})
             .then(response => response.data)
-    }
+    },
+    savePhoto(photoFile) {
+        const formData = new FormData();
+        formData.append('image', photoFile);
+
+        return axiosInstance
+            .put(`/profile/photo`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(response => response.data)
+    },
+    saveProfile(profile) {
+        return axiosInstance
+            .put(`profile`, profile)
+            .then(response => response.data)
+    },
 }
 
 export const authAPI = {
@@ -54,9 +71,9 @@ export const authAPI = {
             .get(`auth/me`)
             .then(response => response.data)
     },
-    login(email, password, rememberMe = false) {
+    login(email, password, rememberMe = false, captcha=null) {
         return axiosInstance
-            .post('auth/login', {email, password, rememberMe})
+            .post('auth/login', {email, password, rememberMe, captcha})
             .then(response => response.data)
     },
     logout() {
@@ -64,4 +81,12 @@ export const authAPI = {
             .delete('auth/login')
             .then(response => response.data)
     }
+}
+
+export const securityAPI = {
+    getCaptchaUrl() {
+        return axiosInstance
+            .get(`security/get-captcha-url`)
+            .then(response => response.data)
+    },
 }

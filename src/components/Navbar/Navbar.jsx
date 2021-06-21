@@ -1,12 +1,6 @@
 import React from "react";
 import s from './Navbar.module.css'
 import {NavLink} from "react-router-dom";
-// s - это объект ('свойство': 'значение')
-// Фактически выглядит так:
-// let s = {
-//     'nav': 'Navbar_nav__XXXXX',
-//     'item': 'Navbar_item__XXXXX'
-// }
 
 const Navbar = () => {
     return(

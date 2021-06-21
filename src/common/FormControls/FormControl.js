@@ -1,9 +1,8 @@
 import React from 'react';
 import styles from './FormControl.module.css';
 import {Field} from "redux-form";
-import {required} from "../../utils/validators/validators";
 
-/*//Не самое удачное решение Димы
+/*//Не самое удачное решение
 const FormControl = ({input, meta, ...props}) => {
     const haveError = meta.error && meta.touched;
 
@@ -31,7 +30,7 @@ export const Input = (props) => {
     </FormControl>
 }*/
 
-/*Наверно, лучшее решение из комментариев (урок 77)
+/*Наверно, лучшее решение из комментариев (урок 77). Сам комментарий:
 Моё решение – пишем такой HOC // ЛИЧНО Я НЕ ОЧЕНЬ УВЕРЕН, ЧТО ЭТО МОЖНО НАЗВАТЬ HOC'ОМ, НАДО ПРОВЕРИТЬ!
 
 const Element = Element => ({ input, meta, ...props }) => {
@@ -59,7 +58,7 @@ P.S. Аргумент у HOC должен быть с большой буквы,
 P.P.S. Создавать const Textarea = Element("textarea"); нужно вне компонента с формой. Иначе фокус с формы сбрасывается после первого символа (хз почему, видимо, ререндерится)*/
 export const ElementCreator = Element => ({input, meta: {touched, error}, ...props}) => {
     const hasError = touched && error;
-    /* //Мой вариант return'a
+    /* Такой return, по идее, даже лучше
     return (props) => {
         return <div className={styles.formControl + ' ' + (hasError && styles.error)}>
             <Element {...input} {...props} />
@@ -73,8 +72,8 @@ export const ElementCreator = Element => ({input, meta: {touched, error}, ...pro
     </div>;
 }
 
-export const createField = (name, component, validators, placeholder, props = {}, text=null) => {
+/*export const createField = (name, component, validators, placeholder, props = {}, text=null) => {
     return  <div>
         <Field name={name} component={component} validate={validators} placeholder={placeholder} {...props}/>{text}
     </div>
-}
+}*/

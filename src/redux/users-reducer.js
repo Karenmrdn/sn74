@@ -71,12 +71,12 @@ export const toggleFollowingProgress = (isFetching, userId) => ({type: TOGGLE_FO
 export const requestUsers = (page, pageSize) => async (dispatch) => {
 
     dispatch(toggleIsFetching(true));
-    dispatch(setCurrentPage(page));                       // ЭТО БЫЛО ТОЛЬКО В onPageNumberClick()
+    dispatch(setCurrentPage(page));
     const data = await usersAPI.getUsers(page, pageSize);
 
     dispatch(toggleIsFetching(false));
     dispatch(setUsers(data.items));
-    dispatch(setTotalUsersCount(data.totalCount));      // ЭТО БЫЛО ТОЛЬКО В componentDidMount()
+    dispatch(setTotalUsersCount(data.totalCount));
 }
 
 const followUnfollowFlow = async (dispatch, userId, apiMethod, actionCreator) => {

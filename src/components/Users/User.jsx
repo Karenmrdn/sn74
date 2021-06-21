@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./Users.module.css";
 import incognitoAva from "../../assets/images/incognitoAvatar.png";
 import {NavLink} from "react-router-dom";
-import Paginator from "../../common/Paginator/Paginator";
 
 let User = ({user, followingInProgress, unfollowUser, followUser}) => {
 
